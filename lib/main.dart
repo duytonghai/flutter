@@ -14,16 +14,6 @@ class HomePage extends StatelessWidget {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar: AppBar(
-          title: new Text('Dito App'),
-          bottom: new TabBar(
-            isScrollable: true,
-            tabs: [
-              Tab(icon: Icon(Icons.list)),
-              Tab(icon: Icon(Icons.photo)),
-              Tab(icon: Icon(Icons.flash_on)),
-            ]),
-        ),
         body: TabBarView(
           children: [
             RandomWords(),
