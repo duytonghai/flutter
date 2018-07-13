@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/words_list_view.dart';
 import 'package:flutter_app/floating_button.dart';
 import 'package:flutter_app/layout.dart';
+import 'package:flutter/rendering.dart';
 
 void main() => runApp(new MyApp());
 
@@ -16,9 +17,9 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         body: TabBarView(
           children: [
+            FloatingButton(),
             RandomWords(),
             Layout(),
-            FloatingButton(),
           ],
         ),
       ),
