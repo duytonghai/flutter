@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+final String imageHost = 'https://image.tmdb.org/t/p/w370_and_h556_bestv2/';
+
 class MovieList extends StatefulWidget {
   @override
   MovieListState createState() => new MovieListState();
@@ -42,14 +44,35 @@ class MovieListState extends State<MovieList> {
     fetchPost();
   }
 
-  Column buildButtonColumn(String imageUrl) {
+  Column buildButtonColumn(Map<String, dynamic> movie) {
+    final String imageUrl = movie['poster_path'];
+
     return new Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        new Image.network("https://image.tmdb.org/t/p/w370_and_h556_bestv2/" + imageUrl),
+        new Image.network(imageHost + imageUrl),
         new Container(
-          margin: const EdgeInsets.only(top: 8.0),
+          child: new RaisedButton.icon(
+            color: Colors.blue,
+            icon: const Icon(
+              Icons.info, size: 25.0, color: Colors.white
+            ),
+            label: new Text(
+              'Detail',
+              style: new TextStyle(
+              color: Colors.white
+              )
+            ),
+            onPressed: () {
+              var route = new MaterialPageRoute(
+                builder: (BuildContext context) => new MovieDetail(movie: movie)
+              );
+
+              Navigator.of(context).push(route);
+            }
+          ),
+          margin: const EdgeInsets.only(top: 5.0, bottom: 8.0),
         ),
       ],
     );
@@ -66,12 +89,12 @@ class MovieListState extends State<MovieList> {
         itemBuilder: (BuildContext context, int index) {
           Map<String, dynamic> item = data[index];
           return new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              buildButtonColumn(item["poster_path"]),
-            ],
+              buildButtonColumn(item)
+            ]
           );
-        }
+        },
       );
     }
   }
@@ -92,6 +115,84 @@ class MovieListState extends State<MovieList> {
 //          child: Icon(Icons.add),
 //        )
 //      ),
+    );
+  }
+}
+
+class MovieDetail extends StatefulWidget {
+  final Map<String, dynamic> movie;
+
+  MovieDetail({Key key, this.movie}) : super(key: key);
+
+  @override
+  _MovieDetailState createState() => _MovieDetailState();
+}
+
+class _MovieDetailState extends State<MovieDetail> {
+
+  Widget titleSection () {
+    return new Container(
+      padding: const EdgeInsets.only(top: 10.0, left: 32.0, right: 32.0),
+      child: new Row(
+        children: [
+          new Expanded(
+            child: new Column(
+              // Positions the column to the beginning of the row.
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  new Container(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: new Text(
+                      widget.movie['title'],
+                      style: new TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  new Text(
+                    'Release date: ${widget.movie['release_date']}',
+                    style: new TextStyle(
+                      color: Colors.grey[500],
+                    ),
+                  )
+                ]
+            ),
+          ),
+          new Icon(Icons.star, color: Colors.red[500]),
+          new Text(widget.movie['vote_average'].toString()),
+        ],
+      ),
+    );
+  }
+
+  Widget buildContent () {
+    return new Container(
+      padding: const EdgeInsets.all(32.0),
+      child: new Text(
+        widget.movie['overview'],
+        softWrap: true,
+      ),
+    );
+  }
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('Movie Detail'),
+      ),
+      body: new ListView(
+        children: [
+          new Image.network(
+            imageHost + widget.movie['poster_path'],
+            fit: BoxFit.cover,
+          ),
+          titleSection(),
+          buildContent()
+        ],
+      ),
     );
   }
 }
