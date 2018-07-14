@@ -11,6 +11,7 @@ class MovieList extends StatefulWidget {
 
 class MovieListState extends State<MovieList> {
   List data;
+  bool isLoading = true;
 
   Future<String> fetchPost() async {
     final response =
@@ -21,16 +22,17 @@ class MovieListState extends State<MovieList> {
     if (response.statusCode == 200) {
       // If the call to the server was successful, parse the JSON
       body = json.decode(response.body);
+
+      this.setState(() {
+        isLoading = false;
+        data = body["results"];
+      });
     } else {
       // If that call was not successful, throw an error.
       throw Exception('Failed to load post');
     }
 
-    this.setState(() {
-      data = body["results"];
-    });
-
-    return "Success!";
+    return 'Success!';
   }
 
 
@@ -53,13 +55,13 @@ class MovieListState extends State<MovieList> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Movies'),
-      ),
-      body: new ListView.builder(
+  Widget _buildBody() {
+    if (isLoading) {
+      return new Center(
+        child: new CircularProgressIndicator(),
+      );
+    } else {
+      return new ListView.builder(
         itemCount: data == null ? 0 : data.length,
         itemBuilder: (BuildContext context, int index) {
           Map<String, dynamic> item = data[index];
@@ -69,7 +71,18 @@ class MovieListState extends State<MovieList> {
               buildButtonColumn(item["poster_path"]),
             ],
           );
-        }),
+        }
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('Movies'),
+      ),
+      body: _buildBody()
 //      floatingActionButton: Theme(
 //        data: Theme.of(context).copyWith(accentColor: Colors.blue),
 //        child: FloatingActionButton(
