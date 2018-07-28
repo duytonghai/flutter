@@ -44,25 +44,16 @@ class MovieListState extends State<MovieList> {
     fetchPost();
   }
 
-  Column buildButtonColumn(Map<String, dynamic> movie) {
-    final String imageUrl = movie['poster_path'];
-
+  Column buildInfoColumn(Map<String, dynamic> movie) {
     return new Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        new Image.network(imageHost + imageUrl),
         new Container(
-          child: new RaisedButton.icon(
-            color: Colors.blue,
+          child: new IconButton(
             icon: const Icon(
-              Icons.info, size: 25.0, color: Colors.white
-            ),
-            label: new Text(
-              'Detail',
-              style: new TextStyle(
-              color: Colors.white
-              )
+              Icons.info,
+              color: Colors.blue,
             ),
             onPressed: () {
               var route = new MaterialPageRoute(
@@ -70,11 +61,44 @@ class MovieListState extends State<MovieList> {
               );
 
               Navigator.of(context).push(route);
-            }
-          ),
-          margin: const EdgeInsets.only(top: 5.0, bottom: 8.0),
+            },
+          )
         ),
       ],
+    );
+  }
+
+  Column buildImageColumn(Map<String, dynamic> movie) {
+    final String imageUrl = movie['poster_path'];
+
+    return new Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        new Container(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: new Image.network(imageHost + imageUrl, width: 80.0),
+        )
+      ],
+    );
+  }
+
+  Expanded buildTitleColumn(Map<String, dynamic> movie) {
+    return new Expanded(
+      child: new Container(
+        padding: const EdgeInsets.only(left: 10.0),
+        child: new Text(
+          movie['title'],
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.left,
+          style: new TextStyle(
+            fontSize: 15.0,
+            fontFamily: 'Roboto',
+            color: new Color(0xFF212121),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     );
   }
 
@@ -87,12 +111,16 @@ class MovieListState extends State<MovieList> {
       return new ListView.builder(
         itemCount: data == null ? 0 : data.length,
         itemBuilder: (BuildContext context, int index) {
-          Map<String, dynamic> item = data[index];
-          return new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              buildButtonColumn(item)
-            ]
+          Map<String, dynamic> movie = data[index];
+          return new Container(
+            padding: const EdgeInsets.only(bottom: 5.0),
+            child: new Row(
+              children: [
+                buildImageColumn(movie),
+                buildTitleColumn(movie),
+                buildInfoColumn(movie),
+              ],
+            ),
           );
         },
       );
