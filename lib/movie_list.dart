@@ -44,6 +44,14 @@ class MovieListState extends State<MovieList> {
     fetchPost();
   }
 
+  void navigateToDetailPage(movie) {
+    var route = new MaterialPageRoute(
+        builder: (BuildContext context) => new MovieDetail(movie: movie)
+    );
+
+    Navigator.of(context).push(route);
+  }
+
   Column buildInfoColumn(Map<String, dynamic> movie) {
     return new Column(
       mainAxisSize: MainAxisSize.max,
@@ -56,11 +64,7 @@ class MovieListState extends State<MovieList> {
               color: Colors.blue,
             ),
             onPressed: () {
-              var route = new MaterialPageRoute(
-                builder: (BuildContext context) => new MovieDetail(movie: movie)
-              );
-
-              Navigator.of(context).push(route);
+              navigateToDetailPage(movie);
             },
           )
         ),
@@ -114,13 +118,17 @@ class MovieListState extends State<MovieList> {
           Map<String, dynamic> movie = data[index];
           return new Container(
             padding: const EdgeInsets.only(bottom: 5.0),
-            child: new Row(
-              children: [
-                buildImageColumn(movie),
-                buildTitleColumn(movie),
-                buildInfoColumn(movie),
-              ],
-            ),
+            child: new GestureDetector(
+              onTap: (){
+                navigateToDetailPage(movie);
+              },
+              child: new Row(
+                children: [
+                  buildImageColumn(movie),
+                  buildTitleColumn(movie),
+                ],
+              ),
+            )
           );
         },
       );
