@@ -21,6 +21,15 @@ class HomePage extends StatelessWidget {
             Layout(),
           ],
         ),
+        bottomNavigationBar: new TabBar(
+          isScrollable: false,
+          labelColor: Colors.blue,
+          tabs: [
+            Tab(icon: Icon(Icons.movie)),
+            Tab(icon: Icon(Icons.list)),
+            Tab(icon: Icon(Icons.layers)),
+          ]
+        )
       ),
     );
   }
