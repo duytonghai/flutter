@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/words_list_view.dart';
 import 'package:flutter_app/layout.dart';
 import 'package:flutter_app/movie_list.dart';
+import 'package:flutter_app/grid_view_layout.dart';
 
 void main() => runApp(new MyApp());
 
@@ -12,10 +13,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         body: TabBarView(
           children: [
+            GridViewLayout(),
             MovieList(),
             RandomWords(),
             Layout(),
@@ -26,6 +28,7 @@ class HomePage extends StatelessWidget {
           labelColor: Colors.blue,
           tabs: [
             Tab(icon: Icon(Icons.movie)),
+            Tab(icon: Icon(Icons.grid_on)),
             Tab(icon: Icon(Icons.list)),
             Tab(icon: Icon(Icons.layers)),
           ]
