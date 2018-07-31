@@ -4,7 +4,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-final String imageHost = 'https://image.tmdb.org/t/p/w370_and_h556_bestv2/';
+import 'package:flutter_app/constants.dart' as C;
+import 'package:flutter_app/model/movies.dart';
+import 'package:flutter_app/movie_detail.dart';
 
 class GridViewLayout extends StatefulWidget {
   @override
@@ -18,7 +20,28 @@ class _GridViewLayoutState extends State<GridViewLayout> {
   @override
   void initState() {
     super.initState();
-    fetchPost();
+    fetchData();
+  }
+
+  Future<String> fetchData() async {
+    if (data == null || data.isEmpty) {
+      List movies = await fetchMovies();
+
+      setState(() {
+        data = movies;
+        isLoading = movies == null || movies.isEmpty;
+      });
+    }
+
+    return 'Done!';
+  }
+
+  void navigateToDetailPage(movie) {
+    var route = new MaterialPageRoute(
+        builder: (BuildContext context) => new MovieDetail(movie: movie)
+    );
+
+    Navigator.of(context).push(route);
   }
 
   Future<String> fetchPost() async {
@@ -54,37 +77,62 @@ class _GridViewLayoutState extends State<GridViewLayout> {
       final String imageUrl = movie['poster_path'];
 
       return Card(
-      // TODO: Adjust card heights (103)
-      child: Column(
-        // TODO: Center items on the card (103)
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          AspectRatio(
-            aspectRatio: 17 / 12,
-            child: new Image.network(imageHost + imageUrl),
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
-              child: Column(
-               // TODO: Align labels to the bottom and center (103)
-               crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                 // TODO: Handle overflowing labels (103)
-                 Text(
-                    movie['title'],
-                    style: theme.textTheme.title,
-                    maxLines: 2,
-                  ),
-                  SizedBox(height: 8.0),
-                ],
+        // TODO: Adjust card heights (103)
+        child: new GestureDetector(
+          onTap: (){
+            navigateToDetailPage(movie);
+          },
+          child: Column(
+            // TODO: Center items on the card (103)
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              AspectRatio(
+                aspectRatio: 17 / 11,
+                child: new Image.network(C.POSTER_HOST + imageUrl),
               ),
-            ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                  child: Column(
+                    // TODO: Align labels to the bottom and center (103)
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // TODO: Handle overflowing labels (103)
+                      Text(
+                        movie['title'],
+                        style: theme.textTheme.title,
+                        maxLines: 2,
+                      ),
+                      SizedBox(height: 8.0),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        )
+      );
     }).toList();
+  }
+
+  Widget _buildBody() {
+    if (isLoading) {
+      return new Center(
+        child: new CircularProgressIndicator(),
+      );
+    } else {
+      return GridView.count(
+        // Specifies how many items across
+        crossAxisCount: 2,
+
+        padding: EdgeInsets.all(16.0),
+
+        // Field identifies the size of the items based on an aspect ratio
+        childAspectRatio: 8.0 / 9.0,
+
+        children: _buildGridCards(context),
+      );
+    }
   }
 
   @override
@@ -113,17 +161,7 @@ class _GridViewLayoutState extends State<GridViewLayout> {
         ),
         title: new Text('Grid View'),
       ),
-      body: GridView.count(
-        // Specifies how many items across
-        crossAxisCount: 2,
-
-        padding: EdgeInsets.all(16.0),
-
-        // Field identifies the size of the items based on an aspect ratio
-        childAspectRatio: 8.0 / 9.0,
-
-        children: _buildGridCards(context),
-      ),
+      body: _buildBody()
     );
   }
 }

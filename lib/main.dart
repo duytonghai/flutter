@@ -17,8 +17,8 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         body: TabBarView(
           children: [
-            MovieList(),
             GridViewLayout(),
+            MovieList(),
             RandomWords(),
             Layout(),
           ],
@@ -28,6 +28,7 @@ class HomePage extends StatelessWidget {
           labelColor: Colors.blue,
           tabs: [
             Tab(icon: Icon(Icons.movie)),
+            Tab(icon: Icon(Icons.grid_on)),
             Tab(icon: Icon(Icons.list)),
             Tab(icon: Icon(Icons.layers)),
           ]
