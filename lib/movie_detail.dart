@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_app/constants.dart' as C;
 
+void navigateToDetailPage(BuildContext context, movie) {
+  var route = new MaterialPageRoute(
+      builder: (BuildContext context) => new MovieDetail(movie: movie)
+  );
+
+  Navigator.of(context).push(route);
+}
+
 class MovieDetail extends StatefulWidget {
   final Map<String, dynamic> movie;
 
@@ -12,7 +20,6 @@ class MovieDetail extends StatefulWidget {
 }
 
 class _MovieDetailState extends State<MovieDetail> {
-
   Widget titleSection () {
     return new Container(
       padding: const EdgeInsets.only(top: 10.0, left: 32.0, right: 32.0),

@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 import 'package:flutter_app/constants.dart' as C;
 import 'package:flutter_app/model/movies.dart';
@@ -35,36 +33,6 @@ class _GridViewLayoutState extends State<GridViewLayout> {
 
     return 'Done!';
   }
-
-  void navigateToDetailPage(movie) {
-    var route = new MaterialPageRoute(
-        builder: (BuildContext context) => new MovieDetail(movie: movie)
-    );
-
-    Navigator.of(context).push(route);
-  }
-
-  Future<String> fetchPost() async {
-    final response =
-    await http.get('https://api.themoviedb.org/3/discover/movie?api_key=b56bafdf7dece8d0f38b8d394bc1fb85&sort_by=popularity.desc');
-
-    Map<String, dynamic> body;
-
-    if (response.statusCode == 200) {
-      // If the call to the server was successful, parse the JSON
-      body = json.decode(response.body);
-
-      this.setState(() {
-        isLoading = false;
-        data = body["results"];
-      });
-    } else {
-      // If that call was not successful, throw an error.
-      throw Exception('Failed to load post');
-    }
-
-    return 'Success!';
-  }
   
   List<Card> _buildGridCards(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -80,7 +48,7 @@ class _GridViewLayoutState extends State<GridViewLayout> {
         // TODO: Adjust card heights (103)
         child: new GestureDetector(
           onTap: (){
-            navigateToDetailPage(movie);
+            navigateToDetailPage(context, movie);
           },
           child: Column(
             // TODO: Center items on the card (103)

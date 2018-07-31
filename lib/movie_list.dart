@@ -34,14 +34,6 @@ class MovieListState extends State<MovieList> {
     return 'Done!';
   }
 
-  void navigateToDetailPage(movie) {
-    var route = new MaterialPageRoute(
-        builder: (BuildContext context) => new MovieDetail(movie: movie)
-    );
-
-    Navigator.of(context).push(route);
-  }
-
   // TODO will be removed
 //  Column buildInfoColumn(Map<String, dynamic> movie) {
 //    return new Column(
@@ -111,7 +103,7 @@ class MovieListState extends State<MovieList> {
             padding: const EdgeInsets.only(bottom: 5.0),
             child: new GestureDetector(
               onTap: (){
-                navigateToDetailPage(movie);
+                navigateToDetailPage(context, movie);
               },
               child: new Row(
                 children: [

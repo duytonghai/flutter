@@ -27,8 +27,8 @@ class HomePage extends StatelessWidget {
           isScrollable: false,
           labelColor: Colors.blue,
           tabs: [
-            Tab(icon: Icon(Icons.movie)),
             Tab(icon: Icon(Icons.grid_on)),
+            Tab(icon: Icon(Icons.movie)),
             Tab(icon: Icon(Icons.list)),
             Tab(icon: Icon(Icons.layers)),
           ]
