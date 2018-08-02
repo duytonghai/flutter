@@ -55,12 +55,12 @@ class _GridViewLayoutState extends State<GridViewLayout> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               AspectRatio(
-                aspectRatio: 17 / 11,
-                child: new Image.network(C.POSTER_HOST + imageUrl),
+                aspectRatio: 14.0 / 11.0,
+                child: new Image.network(C.POSTER_HOST + imageUrl, fit: BoxFit.fitWidth),
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                  padding: EdgeInsets.fromLTRB(10.0, 12.0, 16.0, 8.0),
                   child: Column(
                     // TODO: Align labels to the bottom and center (103)
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,10 +68,9 @@ class _GridViewLayoutState extends State<GridViewLayout> {
                       // TODO: Handle overflowing labels (103)
                       Text(
                         movie['title'],
-                        style: theme.textTheme.title,
+                        style: theme.textTheme.subhead,
                         maxLines: 2,
                       ),
-                      SizedBox(height: 8.0),
                     ],
                   ),
                 ),
