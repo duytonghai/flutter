@@ -88,9 +88,10 @@ class _GridViewLayoutState extends State<GridViewLayout> {
         child: new CircularProgressIndicator(),
       );
     } else {
+      final Orientation orientation = MediaQuery.of(context).orientation;
       return GridView.count(
         // Specifies how many items across
-        crossAxisCount: 2,
+        crossAxisCount: (orientation == Orientation.portrait) ? 2 : 3,
 
         padding: EdgeInsets.all(10.0),
 
