@@ -35,7 +35,7 @@ class _GridViewLayoutState extends State<GridViewLayout> {
   }
   
   List<Card> _buildGridCards(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+//    final ThemeData theme = Theme.of(context);
 
     if (data == null || data.isEmpty) {
       return const <Card>[];
@@ -52,29 +52,29 @@ class _GridViewLayoutState extends State<GridViewLayout> {
           },
           child: Column(
             // TODO: Center items on the card (103)
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               AspectRatio(
-                aspectRatio: 14.0 / 11.0,
-                child: new Image.network(C.POSTER_HOST + imageUrl, fit: BoxFit.fitWidth),
+                aspectRatio: 8.0 / 9.0,
+                child: new Image.network(C.POSTER_HOST + imageUrl, fit: BoxFit.fill),
               ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(10.0, 12.0, 16.0, 8.0),
-                  child: Column(
-                    // TODO: Align labels to the bottom and center (103)
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      // TODO: Handle overflowing labels (103)
-                      Text(
-                        movie['title'],
-                        style: theme.textTheme.subhead,
-                        maxLines: 2,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+//              Expanded(
+//                child: Padding(
+//                  padding: EdgeInsets.fromLTRB(10.0, 12.0, 16.0, 8.0),
+//                  child: Column(
+//                    // TODO: Align labels to the bottom and center (103)
+//                    crossAxisAlignment: CrossAxisAlignment.start,
+//                    children: <Widget>[
+//                      // TODO: Handle overflowing labels (103)
+//                      Text(
+//                        movie['title'],
+//                        style: theme.textTheme.subhead,
+//                        maxLines: 2,
+//                      ),
+//                    ],
+//                  ),
+//                ),
+//              ),
             ],
           ),
         )
@@ -92,7 +92,7 @@ class _GridViewLayoutState extends State<GridViewLayout> {
         // Specifies how many items across
         crossAxisCount: 2,
 
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(10.0),
 
         // Field identifies the size of the items based on an aspect ratio
         childAspectRatio: 8.0 / 9.0,
